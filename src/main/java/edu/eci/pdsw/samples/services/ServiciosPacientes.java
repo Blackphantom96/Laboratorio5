@@ -53,7 +53,7 @@ public interface ServiciosPacientes {
     /**
      * Registra un nuevo paciente en el sistema
      * @param paciente El nuevo paciente
-     * @throws ExcepcionOperacionConPaciente error en la persistencia al momento de registrar un nuevo paciente
+     * @throws ExcepcionServiciosPacientes error en la persistencia al momento de registrar un nuevo paciente
      */
     public abstract void registrarNuevoPaciente(Paciente paciente) throws ExcepcionServiciosPacientes;
     
