@@ -30,6 +30,11 @@ import static org.junit.Assert.*;
  *
  * CE2: Si el paciente no existe resultado: Error
  *
+ * CE3:Si la EPS y los datos son correctos lo agrega resultado : agrega el paciente
+ * 
+ * CE4: No deberia agregar el paciente si la eps no existe o no esta registrada resultado error.
+ *
+ *
  */
 public class ServiciosPacientesTest {
 
@@ -63,6 +68,33 @@ public class ServiciosPacientesTest {
         try {
             serv.agregarConsultaPaciente(0, "Cc", consulta1);
             fail("esta agregando a un paciente inexistente");
+        } catch (ExcepcionServiciosPacientes ex) {
+            Logger.getLogger(ServiciosPacientesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Test
+    public void claseDeEquivalencia3() {
+        serv = new ServiciosPacientesMock();
+        List<Eps> e;
+        try {
+            int x = serv.consultarPacientes().size();
+            e = serv.obtenerEPSsRegistradas();
+            Paciente p = new Paciente(1007013, "Cc", "Juan Moreno", new Date(2000, 2, 1), e.get(0));
+            serv.registrarNuevoPaciente(p);
+            assertEquals("no esta agregando los pacientes", x,serv.consultarPacientes().size()-1);
+        } catch (ExcepcionServiciosPacientes ex) {
+            Logger.getLogger(ServiciosPacientesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Test
+    public void claseDeEquivalencia4() {
+        serv = new ServiciosPacientesMock();
+        Paciente p = new Paciente(1007013, "Cc", "Juan Moreno", new Date(2100, 2, 1), new Eps("asdaad", "12312313-2"));
+        try {
+            serv.registrarNuevoPaciente(p);
+            fail("No deberia agregar el paciente");
         } catch (ExcepcionServiciosPacientes ex) {
             Logger.getLogger(ServiciosPacientesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
