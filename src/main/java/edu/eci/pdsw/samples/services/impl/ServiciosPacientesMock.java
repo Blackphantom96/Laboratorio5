@@ -37,11 +37,12 @@ import java.util.logging.Logger;
  *
  * @author hcadavid
  */
-public class ServiciosPacientesMock implements ServiciosPacientes,Serializable {
+public class ServiciosPacientesMock implements ServiciosPacientes, Serializable {
 
     private final Map<Tupla<Integer, String>, Paciente> pacientes;
     private final List<Eps> epsregistradas;
     private int idconsulta = 1;
+
     public ServiciosPacientesMock() {
         this.pacientes = new LinkedHashMap<>();
         epsregistradas = new LinkedList<>();
@@ -61,7 +62,12 @@ public class ServiciosPacientesMock implements ServiciosPacientes,Serializable {
 
     @Override
     public void registrarNuevoPaciente(Paciente paciente) throws ExcepcionServiciosPacientes {
-        pacientes.put(new Tupla<>(paciente.getId(), paciente.getTipoId()), paciente);
+        if (epsregistradas.indexOf(paciente.getEps()) >= 0) {
+            pacientes.put(new Tupla<>(paciente.getId(), paciente.getTipoId()), paciente);
+        } else {
+            throw new ExcepcionServiciosPacientes("Eps " + paciente.getEps().getNombre() + " no esta registrada");
+        }
+
     }
 
     @Override
@@ -185,7 +191,7 @@ public class ServiciosPacientesMock implements ServiciosPacientes,Serializable {
         }
 
     }
-    
+
     @Override
     public List<Eps> obtenerEPSsRegistradas() throws ExcepcionServiciosPacientes {
         return epsregistradas;
