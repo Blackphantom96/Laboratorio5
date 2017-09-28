@@ -21,6 +21,7 @@ import edu.eci.pdsw.samples.entities.Eps;
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,23 +37,24 @@ import java.util.logging.Logger;
  *
  * @author hcadavid
  */
-public class ServiciosPacientesMock implements ServiciosPacientes {
+public class ServiciosPacientesMock implements ServiciosPacientes,Serializable {
 
     private final Map<Tupla<Integer, String>, Paciente> pacientes;
     private final List<Eps> epsregistradas;
     private int idconsulta = 1;
-
+    public static ServiciosPacientesMock slave;
     public ServiciosPacientesMock() {
         this.pacientes = new LinkedHashMap<>();
         epsregistradas = new LinkedList<>();
         cargarDatosEstaticos(pacientes);
+        slave=this;
     }
 
     @Override
     public Paciente consultarPaciente(int idPaciente, String tipoid) throws ExcepcionServiciosPacientes {
         Paciente paciente = pacientes.get(new Tupla<>(idPaciente, tipoid));
         if (paciente == null) {
-            throw new ExcepcionServiciosPacientes("Paciente " + idPaciente + " no esta registrado");
+            throw new ExcepcionServiciosPacientes("Paciente " + idPaciente + " no existe");
         } else {
             return paciente;
         }
@@ -61,15 +63,12 @@ public class ServiciosPacientesMock implements ServiciosPacientes {
 
     @Override
     public void registrarNuevoPaciente(Paciente paciente) throws ExcepcionServiciosPacientes {
-        
         pacientes.put(new Tupla<>(paciente.getId(), paciente.getTipoId()), paciente);
-        
     }
 
     @Override
     public void agregarConsultaPaciente(int idPaciente, String tipoid, Consulta consulta) throws ExcepcionServiciosPacientes {
-        
-        Paciente paciente = pacientes.get(new Tupla<>(idPaciente, tipoid));
+        Paciente paciente = consultarPaciente(idPaciente, tipoid);
         if (paciente != null) {
             consulta.setId(idconsulta);
             idconsulta++;

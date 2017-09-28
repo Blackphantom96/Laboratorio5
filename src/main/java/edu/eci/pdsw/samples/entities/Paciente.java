@@ -17,15 +17,17 @@
 package edu.eci.pdsw.samples.entities;
 
 
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
- * @author hcadavid
+ * @author blackphantom
  */
+@ManagedBean(name = "Paciente")
+@SessionScoped
 public class Paciente {
     
     private int id;
