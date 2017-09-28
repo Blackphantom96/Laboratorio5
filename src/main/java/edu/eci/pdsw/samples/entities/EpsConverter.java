@@ -5,8 +5,10 @@
  */
 package edu.eci.pdsw.samples.entities;
 
-import edu.eci.pdsw.samples.managebeans.RegistroPacientesBean;
+import edu.eci.pdsw.samples.managebeans.RegistroConsultaBean;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosHistorialPacientesFactory;
+import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import edu.eci.pdsw.samples.services.impl.ServiciosPacientesMock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,8 +29,9 @@ public class EpsConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
         try {
-            for (Eps q : ServiciosPacientesMock.slave.obtenerEPSsRegistradas()) {
-                if (q.getNombre().equals(string)) 
+            ServiciosPacientes a = RegistroConsultaBean.servicepacientes;
+            for (Eps q : a.obtenerEPSsRegistradas()) {
+                if (q.getNombre().equals(string))
                     return q;
             }
         } catch (ExcepcionServiciosPacientes ex) {

@@ -42,12 +42,10 @@ public class ServiciosPacientesMock implements ServiciosPacientes,Serializable {
     private final Map<Tupla<Integer, String>, Paciente> pacientes;
     private final List<Eps> epsregistradas;
     private int idconsulta = 1;
-    public static ServiciosPacientesMock slave;
     public ServiciosPacientesMock() {
         this.pacientes = new LinkedHashMap<>();
         epsregistradas = new LinkedList<>();
         cargarDatosEstaticos(pacientes);
-        slave=this;
     }
 
     @Override

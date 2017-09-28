@@ -5,6 +5,40 @@
     <h:head></h:head>
 
     <h:body>
+        <h:form id="con">
+            <p:dataTable id="basicDT" var="consu" value="#{HistorialPacientes.consultas}">
+                <f:facet name="header">
+                    Consultas
+                </f:facet>
+                <p:column headerText="Id">
+                    <h:outputText value="#{consu.id}" />
+                </p:column>
+                <p:column headerText="Fecha Nacimiento">
+                    <h:outputText value="#{consu.fechayHora}" />
+                </p:column>
+                <p:column headerText="Resumen">
+                    <h:outputText value="#{consu.resumen}" />
+                </p:column>
+                <p:column headerText="Costo">
+                    <h:outputText value="#{consu.costo}" />
+                </p:column>
+            </p:dataTable>
+            <center>
+                <p:panel header="Registro Consulta">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Fecha"/>  
+                        <p:calendar value="#{HistorialPacientes.consultaAgrega.fechayHora}"/>
+                        <p:outputLabel value="Costo"/>
+                        <p:inputText value="#{HistorialPacientes.consultaAgrega.costo}"/>
+                        <p:outputLabel value="Resumen"/>
+                        <p:inputText value="#{HistorialPacientes.consultaAgrega.resumen}"/>
+                        <p:commandButton update="con" value="Submit" actionListener="#{HistorialPacientes.agregarConsulta()}"/>
+                        <p:commandButton  value="Return" action="registropacientes"/>
+                    </h:panelGrid>
+
+                </p:panel>
+            </center>
+        </h:form>
     </h:body>
 
 </html>

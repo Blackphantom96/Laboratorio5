@@ -6,7 +6,7 @@
     <h:head></h:head>
     <h:body>
         <h:form id="form">
-            <p:dataTable id="basicDT" var="paci" value="#{RegistroPacientesBean.pacientes}">
+            <p:dataTable id="basicDT" var="paci" value="#{HistorialPacientes.pacientes}">
                 <f:facet name="header">
                     Pacientes
                 </f:facet>
@@ -29,7 +29,8 @@
                     <h:outputText value="#{paci.consultas.size()}" />
                 </p:column>
                 <p:column headerText="Agregar Consulta">
-                    <p:commandButton value="Add">
+                    <p:commandButton value="Add" action="registroconsultas">
+                        <f:actionListener binding="#{HistorialPacientes.setPacienteSeleccionado(paci)}" />
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
@@ -37,23 +38,23 @@
                 <p:panel header="Registro Paciente">
                     <h:panelGrid columns="2">
                         <p:outputLabel value="T Documento"/>
-                        <p:inputText value="#{RegistroPacientesBean.pacienteAgrega.tipoId}"/>
+                        <p:inputText value="#{HistorialPacientes.pacienteAgrega.tipoId}"/>
                         <p:outputLabel value="Id"/>
-                        <p:inputText value="#{RegistroPacientesBean.pacienteAgrega.id}"/>
+                        <p:inputText value="#{HistorialPacientes.pacienteAgrega.id}"/>
                         <p:outputLabel value="Nombre"/>
-                        <p:inputText value="#{RegistroPacientesBean.pacienteAgrega.nombre}"/>
+                        <p:inputText value="#{HistorialPacientes.pacienteAgrega.nombre}"/>
                         <p:outputLabel value="F. Nacimiento"/>
-                        <p:calendar showOtherMonths="True"  value="#{RegistroPacientesBean.pacienteAgrega.fechaNacimiento}" pattern="dd/MM/yyyy"/>
+                        <p:calendar showOtherMonths="True"  value="#{HistorialPacientes.pacienteAgrega.fechaNacimiento}" pattern="dd/MM/yyyy"/>
                         <p:outputLabel value="Eps"/>
-                        <p:selectOneMenu value="#{RegistroPacientesBean.pacienteAgrega.eps}" converter="epsConverter" var="q">
-                            <f:selectItems value="#{RegistroPacientesBean.eps}" var="ep"
+                        <p:selectOneMenu value="#{HistorialPacientes.pacienteAgrega.eps}" converter="epsConverter" var="q">
+                            <f:selectItems value="#{HistorialPacientes.eps}" var="ep"
                                            itemLabel="#{ep.nombre}" itemValue="#{ep}"/>
                             <p:column>
                                 #{q.nombre}
                             </p:column>
                         </p:selectOneMenu>
                     </h:panelGrid>
-                    <p:commandButton value="Submit" resetValues="True" update="form" actionListener="#{RegistroPacientesBean.addPaciente()}"/>
+                    <p:commandButton value="Submit" resetValues="True" update="form" actionListener="#{HistorialPacientes.addPaciente()}"/>
                 </p:panel>
             </center>
         </h:form>

@@ -17,7 +17,7 @@ import edu.eci.pdsw.samples.services.impl.ServiciosPacientesMock;
  */
 public class ServiciosHistorialPacientesFactory {
 
-    private static ServiciosHistorialPacientesFactory instance = new ServiciosHistorialPacientesFactory();
+    private static final ServiciosHistorialPacientesFactory instance = new ServiciosHistorialPacientesFactory();
 
     private static Injector injector;
 

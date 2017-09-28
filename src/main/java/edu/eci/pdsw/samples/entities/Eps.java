@@ -12,8 +12,7 @@ import javax.inject.Named;
  *
  * @author Martin
  */
-@Named(value = "Eps")
-@SessionScoped
+
 public class Eps {
     
     private String nombre;
