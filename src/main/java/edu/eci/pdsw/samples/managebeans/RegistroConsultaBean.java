@@ -11,7 +11,6 @@ import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosHistorialPacientesFactory;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
-import edu.eci.pdsw.samples.services.impl.ServiciosPacientesMock;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +29,7 @@ import org.primefaces.context.RequestContext;
 public class RegistroConsultaBean implements Serializable {
 
     private Paciente pacienteSeleccionado;
-    public static final ServiciosPacientes servicepacientes= ServiciosHistorialPacientesFactory.getInstance().getServiciosPaciente();;
+    public final ServiciosPacientes servicepacientes= ServiciosHistorialPacientesFactory.getInstance().getServiciosPaciente();;
     private Consulta consultaAgrega;
     private Paciente pacienteAgrega;
     public RegistroConsultaBean() {

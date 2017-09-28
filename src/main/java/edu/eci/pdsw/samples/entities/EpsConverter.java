@@ -29,7 +29,7 @@ public class EpsConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
         try {
-            ServiciosPacientes a = RegistroConsultaBean.servicepacientes;
+            ServiciosPacientes a = ServiciosHistorialPacientesFactory.getInstance().getServiciosPaciente();
             for (Eps q : a.obtenerEPSsRegistradas()) {
                 if (q.getNombre().equals(string))
                     return q;
