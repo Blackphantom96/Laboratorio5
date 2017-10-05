@@ -10,12 +10,11 @@ import edu.eci.pdsw.samples.entities.Eps;
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
-import edu.eci.pdsw.samples.services.impl.ServiciosPacientesMock;
+import edu.eci.pdsw.samples.services.impl.ServiciosPacienteImpl;
 import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -49,7 +48,7 @@ public class ServiciosPacientesTest {
 
     @Test
     public void claseDeEquivalencia1() throws ExcepcionServiciosPacientes {
-        serv = new ServiciosPacientesMock();
+        serv = new ServiciosPacienteImpl();
         int x = serv.obtenerConsultasEps("Compensar").size();
         Consulta consulta1 = new Consulta(java.sql.Date.valueOf("2020-01-01"), "Dolor de cabeza", 13445);
         try {
@@ -62,7 +61,7 @@ public class ServiciosPacientesTest {
 
     @Test
     public void claseDeEquivalencia2() throws ExcepcionServiciosPacientes {
-        serv = new ServiciosPacientesMock();
+        serv = new ServiciosPacienteImpl();
         int x = serv.obtenerConsultasEps("Compensar").size();
         Consulta consulta1 = new Consulta(java.sql.Date.valueOf("2020-01-01"), "Dolor de cabeza", 13445);
         try {
@@ -75,7 +74,7 @@ public class ServiciosPacientesTest {
 
     @Test
     public void claseDeEquivalencia3() {
-        serv = new ServiciosPacientesMock();
+        serv = new ServiciosPacienteImpl();
         List<Eps> e;
         try {
             int x = serv.consultarPacientes().size();
@@ -90,7 +89,7 @@ public class ServiciosPacientesTest {
 
     @Test
     public void claseDeEquivalencia4() {
-        serv = new ServiciosPacientesMock();
+        serv = new ServiciosPacienteImpl();
         Paciente p = new Paciente(1007013, "Cc", "Juan Moreno", new Date(2100, 2, 1), new Eps("asdaad", "12312313-2"));
         try {
             serv.registrarNuevoPaciente(p);
