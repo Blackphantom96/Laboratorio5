@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="edu.eci.pdsw.persistence.impl.mappers.PacienteMapper">
+    
+
+        
+    <select parameterType="map"  id="getPaciente" resultMap="PacienteResult">
+        select
+        
+        p.id,
+        p.tipo_id,
+        p.nombre,
+        p.fecha_nacimiento,
+
+        e.nombre as nombre_eps,
+        e.nit,
+
+        c.idCONSULTAS,
+        c.fecha_y_hora,
+        c.resumen,
+        c.costo
+    
+        FROM  CM_PACIENTES as p left join CM_CONSULTAS as c on p.id=c.PACIENTES_id left join CM_EPS as e on p.eps_nit=e.nit
+        where id = #{idp} and tipo_id=#{tipoidp}
+    </select>
+    
+       
+    <select parameterType="map"  id="loadPacientes" resultMap="PacienteResult">
+        select
+        
+        p.id,
+        p.tipo_id,
+        p.nombre,
+        p.fecha_nacimiento,
+
+        e.nombre as nombre_eps,
+        e.nit,
+
+        c.idCONSULTAS,
+        c.fecha_y_hora,
+        c.resumen,
+        c.costo
+    
+        FROM  CM_PACIENTES as p left join CM_CONSULTAS as c on p.id=c.PACIENTES_id left join CM_EPS as e on p.eps_nit=e.nit
+    
+    </select>
+    
+    <resultMap type="Paciente" id="PacienteResult">
+        <id column="id" property="id"/>
+        <id column="tipo_id" property="tipoId"/>
+        <result column="nombre" property="nombre"/>
+        <result column="fecha_nacimiento" property="fechaNacimiento"/>
+        <association property="eps" javaType="Eps" resultMap="EpsResult"></association> 
+        <collection property='consultas' ofType='Consulta' resultMap="ConsultaResult"></collection>
+    </resultMap>
+    <resultMap type="Consulta" id="ConsultaResult">
+        <id column="idCONSULTAS" property="id"/>
+        <result column="fecha_y_hora" property="fechayHora"/>
+        <result column="resumen" property="resumen"/>
+        <result column="costo" property="costo"/>
+    </resultMap>
+    <resultMap type="Eps" id="EpsResult">
+        <id column="nit" property="nit"/>
+        <result column="nombre_eps" property="nombre"/>
+    </resultMap>
+    
+    <insert id="insertarPaciente">
+        insert into CM_PACIENTES (id, tipo_id, nombre, fecha_nacimiento, EPS_nit) 
+        values (#{id},#{tipoId},#{nombre}, #{fechaNacimiento},#{eps.nit})
+    </insert>
+    
+    <insert id="insertConsulta" useGeneratedKeys="true" keyProperty="con.id">
+        insert into `CM_CONSULTAS` (fecha_y_hora,resumen,costo,PACIENTES_id,PACIENTES_tipo_id) values
+        (#{con.fechayHora},#{con.resumen},#{con.costo},#{idp},#{tipoidp})
+    </insert>
+    
+    <update id="actualizarPaciente">
+        update CM_PACIENTES
+        set nombre = #{p.nombre}, 
+        fecha_nacimiento=#{p.fechaNacimiento},
+        EPS_nit=#{p.eps.nit}
+        where id=#{p.id} and tipo_id=#{p.tipoId};
+    </update>
+    
+</mapper>
