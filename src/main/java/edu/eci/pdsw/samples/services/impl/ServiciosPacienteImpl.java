@@ -8,6 +8,7 @@ package edu.eci.pdsw.samples.services.impl;
 import com.google.inject.Inject;
 import edu.eci.pdsw.persistence.EPSDAO;
 import edu.eci.pdsw.persistence.PacienteDAO;
+import edu.eci.pdsw.persistence.PersistenceException;
 import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Eps;
 import edu.eci.pdsw.samples.entities.Paciente;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import org.mybatis.guice.transactional.Transactional;
 
 /**
  *
@@ -25,35 +27,57 @@ import java.util.Set;
 public class ServiciosPacienteImpl implements ServiciosPacientes {
 
     @Inject
-    PacienteDAO pDAO;
+    private PacienteDAO pDAO;
 
     @Inject
-    EPSDAO eDAO;
+    private EPSDAO eDAO;
 
+    @Transactional
     @Override
     public Paciente consultarPaciente(int idPaciente, String tipoid) throws ExcepcionServiciosPacientes {
-        return pDAO.loadById(idPaciente, tipoid);
+        try {
+            return pDAO.loadById(idPaciente, tipoid);
+        } catch (PersistenceException ex) {
+            throw new ExcepcionServiciosPacientes("no se encontro el paciente" + idPaciente);
+        }
     }
 
+    @Transactional
     @Override
     public List<Paciente> consultarPacientes() throws ExcepcionServiciosPacientes {
-        return pDAO.load();
+        try {
+            return pDAO.load();
+        } catch (PersistenceException ex) {
+            throw new ExcepcionServiciosPacientes("hubo un error al cargar los pacientes");
+        }
     }
 
+    @Transactional
     @Override
     public void registrarNuevoPaciente(Paciente paciente) throws ExcepcionServiciosPacientes {
-        pDAO.save(paciente);
+        try {
+            pDAO.save(paciente);
+        } catch (PersistenceException ex) {
+            throw new ExcepcionServiciosPacientes("no se pudo agregar el paciente" + paciente.getNombre());
+        }
     }
 
+    @Transactional
     @Override
     public void agregarConsultaPaciente(int idPaciente, String tipoid, Consulta consulta) throws ExcepcionServiciosPacientes {
-        Paciente p = consultarPaciente(idPaciente, tipoid);
-        Set<Consulta> consultas = p.getConsultas();
-        consultas.add(consulta);
-        p.setConsultas(consultas);
-        pDAO.update(p);
+        try {
+            Paciente p = consultarPaciente(idPaciente, tipoid);
+            Set<Consulta> consultas = p.getConsultas();
+            consultas.add(consulta);
+            p.setConsultas(consultas);
+            pDAO.update(p);
+        } catch (PersistenceException ex) {
+            System.err.println(ex);
+            throw new ExcepcionServiciosPacientes("no se pudo agregar la consulta al paciente " + idPaciente);
+        }
     }
 
+    @Transactional
     @Override
     public List<Consulta> obtenerConsultasEpsPorFecha(String nameEps, Date fechaInicio, Date fechaFin) throws ExcepcionServiciosPacientes {
         List<Consulta> temp = new ArrayList<>();
@@ -69,6 +93,7 @@ public class ServiciosPacienteImpl implements ServiciosPacientes {
         return temp;
     }
 
+    @Transactional
     @Override
     public long obtenerCostoEpsPorFecha(String nameEps, Date fechaInicio, Date fechaFin) throws ExcepcionServiciosPacientes {
         long deuda = 0;
@@ -84,6 +109,7 @@ public class ServiciosPacienteImpl implements ServiciosPacientes {
         return deuda;
     }
 
+    @Transactional
     @Override
     public List<Consulta> obtenerConsultasEps(String nameEps) throws ExcepcionServiciosPacientes {
         List<Consulta> temp = new ArrayList<>();
@@ -98,9 +124,14 @@ public class ServiciosPacienteImpl implements ServiciosPacientes {
         return temp;
     }
 
+    @Transactional
     @Override
     public List<Eps> obtenerEPSsRegistradas() throws ExcepcionServiciosPacientes {
-        return eDAO.load();
+        try {
+            return eDAO.load();
+        } catch (PersistenceException ex) {
+            throw new ExcepcionServiciosPacientes("no se pudo cargar las eps");
+        }
     }
 
 }

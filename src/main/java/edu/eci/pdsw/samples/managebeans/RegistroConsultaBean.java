@@ -78,6 +78,7 @@ public class RegistroConsultaBean implements Serializable {
         servicepacientes.agregarConsultaPaciente(pacienteSeleccionado.getId(),
                 pacienteSeleccionado.getTipoId(), consultaAgrega);
         consultaAgrega = new Consulta();
+        pacienteSeleccionado=servicepacientes.consultarPaciente(pacienteSeleccionado.getId(), pacienteSeleccionado.getTipoId());
     }
     public void addPaciente() throws ExcepcionServiciosPacientes{
         servicepacientes.registrarNuevoPaciente(pacienteAgrega);

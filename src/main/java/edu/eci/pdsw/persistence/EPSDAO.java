@@ -7,17 +7,16 @@ package edu.eci.pdsw.persistence;
 
 import edu.eci.pdsw.samples.entities.Eps;
 import java.util.List;
-
 /**
  *
  * @author blackphantom
  */
 public interface EPSDAO {
-    public List<Eps> load();
+    public List<Eps> load() throws PersistenceException;
 
-    public Eps loadById(int nit);
+    public Eps loadById(int nit) throws PersistenceException;
     
-    public void save(Eps e);
+    public void save(Eps e) throws PersistenceException ;
     
-    public void update(Eps e);
+    public void update(Eps e) throws PersistenceException;
 }
