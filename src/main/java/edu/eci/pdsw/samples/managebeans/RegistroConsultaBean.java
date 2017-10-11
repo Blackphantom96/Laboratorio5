@@ -89,5 +89,8 @@ public class RegistroConsultaBean implements Serializable {
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, estado, mensaje);
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
+    public void vaciarPaciente(){
+        pacienteSeleccionado=null;
+    }
 
 }

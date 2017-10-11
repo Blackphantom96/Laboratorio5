@@ -33,7 +33,7 @@
                         <p:outputLabel value="Resumen"/>
                         <p:inputText value="#{HistorialPacientes.consultaAgrega.resumen}"/>
                         <p:commandButton update="con" value="Submit" actionListener="#{HistorialPacientes.agregarConsulta()}"/>
-                        <p:commandButton  value="Return" action="registropacientes"/>
+                        <p:commandButton  value="Return" action="registropacientes" actionListener="#{HistorialPacientes.vaciarPaciente()}"/>
                     </h:panelGrid>
 
                 </p:panel>
