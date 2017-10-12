@@ -55,7 +55,6 @@ public class PacienteDAOMyBATIS implements PacienteDAO {
     @Override
     public void update(Paciente p) throws PersistenceException {
         try {
-            Paciente temp = pMapper.getPaciente(p.getId(), p.getTipoId());
             for (Consulta c : p.getConsultas()) {
                 if (c.getId() == 0) {
                     pMapper.insertConsulta(c, p.getId(), p.getTipoId(), (int) c.getCosto());
