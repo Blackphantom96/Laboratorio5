@@ -39,6 +39,9 @@ jobs:
         
       # run tests!
       - run: mvn test
-
-
+	deployment:
+  		staging:
+    			branch: master
+    			heroku: 
+      				appname: servicios-medicos-pdsw
 
