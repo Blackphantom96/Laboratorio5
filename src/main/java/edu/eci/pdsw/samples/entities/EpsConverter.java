@@ -9,7 +9,6 @@ import edu.eci.pdsw.samples.managebeans.RegistroConsultaBean;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosHistorialPacientesFactory;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
-import edu.eci.pdsw.samples.services.impl.ServiciosPacientesMock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.component.UIComponent;

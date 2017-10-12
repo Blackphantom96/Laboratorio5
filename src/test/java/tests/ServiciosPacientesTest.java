@@ -9,6 +9,7 @@ import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Eps;
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosHistorialPacientesFactory;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import edu.eci.pdsw.samples.services.impl.ServiciosPacientesMock;
 import java.sql.Date;
@@ -30,15 +31,17 @@ import static org.junit.Assert.*;
  *
  * CE2: Si el paciente no existe resultado: Error
  *
- * CE3:Si la EPS y los datos son correctos lo agrega resultado : agrega el paciente
- * 
- * CE4: No deberia agregar el paciente si la eps no existe o no esta registrada resultado error.
+ * CE3:Si la EPS y los datos son correctos lo agrega resultado : agrega el
+ * paciente
+ *
+ * CE4: No deberia agregar el paciente si la eps no existe o no esta registrada
+ * resultado error.
  *
  *
  */
 public class ServiciosPacientesTest {
 
-    ServiciosPacientes serv;
+    ServiciosPacientes serv = ServiciosHistorialPacientesFactory.getInstance().getTestingServiciosPaciente();
 
     public ServiciosPacientesTest() {
     }
@@ -48,41 +51,37 @@ public class ServiciosPacientesTest {
     }
 
     @Test
-    public void claseDeEquivalencia1() throws ExcepcionServiciosPacientes {
-        serv = new ServiciosPacientesMock();
-        int x = serv.obtenerConsultasEps("Compensar").size();
-        Consulta consulta1 = new Consulta(java.sql.Date.valueOf("2020-01-01"), "Dolor de cabeza", 13445);
+    public void claseDeEquivalencia1() {
         try {
-            serv.agregarConsultaPaciente(1, "CC", consulta1);
-            assertEquals("no esta agregando", x, serv.obtenerConsultasEps("Compensar").size() - 1);
-        } catch (ExcepcionServiciosPacientes ex) {
-            Logger.getLogger(ServiciosPacientesTest.class.getName()).log(Level.SEVERE, null, ex);
+            Paciente p = serv.consultarPacientes().get(0);
+            int x = serv.obtenerConsultasEps(p.getEps().getNombre()).size();
+            Consulta consulta1 = new Consulta(java.sql.Date.valueOf("2017-01-01"), "Dolor de cabeza", 13445);
+            serv.agregarConsultaPaciente(p.getId(), p.getTipoId(), consulta1);
+            assertEquals("no esta agregando la consulta", x, serv.obtenerConsultasEps(p.getEps().getNombre()).size() - 1);
+        } catch (Exception e) {
+            
         }
     }
 
     @Test
-    public void claseDeEquivalencia2() throws ExcepcionServiciosPacientes {
-        serv = new ServiciosPacientesMock();
-        int x = serv.obtenerConsultasEps("Compensar").size();
+    public void claseDeEquivalencia2() {
         Consulta consulta1 = new Consulta(java.sql.Date.valueOf("2020-01-01"), "Dolor de cabeza", 13445);
         try {
             serv.agregarConsultaPaciente(0, "Cc", consulta1);
             fail("esta agregando a un paciente inexistente");
-        } catch (ExcepcionServiciosPacientes ex) {
-            Logger.getLogger(ServiciosPacientesTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+
         }
     }
 
     @Test
     public void claseDeEquivalencia3() {
-        serv = new ServiciosPacientesMock();
-        List<Eps> e;
         try {
             int x = serv.consultarPacientes().size();
-            e = serv.obtenerEPSsRegistradas();
+            List<Eps> e = serv.obtenerEPSsRegistradas();
             Paciente p = new Paciente(1007013, "Cc", "Juan Moreno", new Date(2000, 2, 1), e.get(0));
             serv.registrarNuevoPaciente(p);
-            assertEquals("no esta agregando los pacientes", x,serv.consultarPacientes().size()-1);
+            assertEquals("no esta agregando los pacientes", x, serv.consultarPacientes().size() - 1);
         } catch (ExcepcionServiciosPacientes ex) {
             Logger.getLogger(ServiciosPacientesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -90,13 +89,13 @@ public class ServiciosPacientesTest {
 
     @Test
     public void claseDeEquivalencia4() {
-        serv = new ServiciosPacientesMock();
-        Paciente p = new Paciente(1007013, "Cc", "Juan Moreno", new Date(2100, 2, 1), new Eps("asdaad", "12312313-2"));
+        Paciente p = new Paciente(1007013, "Cc", "Juan Moreno eps no", new Date(2000, 2, 1), new Eps("asdaad", "12312313"));
         try {
             serv.registrarNuevoPaciente(p);
+            for(Paciente g: serv.consultarPacientes())
+                System.err.println(g);
             fail("No deberia agregar el paciente");
-        } catch (ExcepcionServiciosPacientes ex) {
-            Logger.getLogger(ServiciosPacientesTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
         }
     }
 

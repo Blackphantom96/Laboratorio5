@@ -78,6 +78,7 @@ public class RegistroConsultaBean implements Serializable {
         servicepacientes.agregarConsultaPaciente(pacienteSeleccionado.getId(),
                 pacienteSeleccionado.getTipoId(), consultaAgrega);
         consultaAgrega = new Consulta();
+        pacienteSeleccionado=servicepacientes.consultarPaciente(pacienteSeleccionado.getId(), pacienteSeleccionado.getTipoId());
     }
     public void addPaciente() throws ExcepcionServiciosPacientes{
         servicepacientes.registrarNuevoPaciente(pacienteAgrega);
@@ -87,6 +88,9 @@ public class RegistroConsultaBean implements Serializable {
         FacesMessage message;
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, estado, mensaje);
         RequestContext.getCurrentInstance().showMessageInDialog(message);
+    }
+    public void vaciarPaciente(){
+        pacienteSeleccionado=null;
     }
 
 }
